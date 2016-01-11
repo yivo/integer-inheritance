@@ -9,7 +9,8 @@
   class Publication < Post
   end
 
-  # Add to initializers or in some script that does not reload (this adds support for reloading in development mode. See ActionDispatch::Reloader):
+  # Add to initializers or to some script that is not reloaded:
+  # (this adds support for reloading in development mode. See ActionDispatch::Reloader)
   IntegerInheritance.describe do
 
     # Use full class name here (only strings!)
