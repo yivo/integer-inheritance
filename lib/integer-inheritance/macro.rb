@@ -3,12 +3,16 @@ module IntegerInheritance
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def uses_integer_inheritance
+      def uses_integer_inheritance(options = {})
         include IntegerInheritance::Extension unless respond_to?(:inheritance_mapping)
 
-        mapping = IntegerInheritance.mappings[name]
+        self.inheritance_column = options.fetch(:column, IntegerInheritance.default_column)
+
+        # This is workaround for ActionDispatch::Reloader (in development environment)
+        class_name = name
+        mapping    = IntegerInheritance.mappings[class_name]
         self.inheritance_mapping = mapping if mapping
-        IntegerInheritance.mappings[name] = self.inheritance_mapping
+        IntegerInheritance.mappings[class_name] = self.inheritance_mapping
       end
     end
   end

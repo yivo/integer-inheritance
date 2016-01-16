@@ -16,13 +16,13 @@ module IntegerInheritance
       Evaluator.instance.instance_eval(&block)
     end
 
-    attr_accessor :column
+    attr_accessor :default_column
   end
 
-  self.column = 'sti_type'
+  self.default_column = 'sti_type'
 end
 
 module ActiveRecord
-  Base.include(IntegerInheritance::Macro)
-  ConnectionAdapters::TableDefinition.include(IntegerInheritance::ColumnTypes)
+  Base.include IntegerInheritance::Macro
+  ConnectionAdapters::TableDefinition.include IntegerInheritance::ColumnTypes
 end
