@@ -19,7 +19,7 @@ module IntegerInheritance
     attr_accessor :default_column
   end
 
-  self.default_column = 'sti_type'
+  self.default_column = 'inheritance_type'
 end
 
 module ActiveRecord
