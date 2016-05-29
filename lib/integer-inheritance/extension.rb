@@ -24,6 +24,7 @@ module IntegerInheritance
       end
 
     private
+      # lib/active_record/inheritance.rb
       def subclass_from_attributes(attrs)
         type = attrs.with_indifferent_access[inheritance_column].to_i
 
