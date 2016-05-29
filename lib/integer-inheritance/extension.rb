@@ -7,12 +7,18 @@ module IntegerInheritance
       self.inheritance_mapping = {}
     end
 
+    def as_json(options = {})
+      json = super(options)
+      col  = self.class.inheritance_column
+      json[col] = send(col)
+      json
+    end
+
     module ClassMethods
 
       # http://apidock.com/rails/ActiveRecord/Inheritance/ClassMethods/sti_name
       def sti_name
-        v = super
-        inheritance_mapping.key(v) || v
+        inheritance_mapping.key(super)
       end
 
       alias inheritance_type sti_name
@@ -26,17 +32,20 @@ module IntegerInheritance
     private
       # lib/active_record/inheritance.rb
       def subclass_from_attributes(attrs)
-        type = attrs.with_indifferent_access[inheritance_column].to_i
+        col  = inheritance_column
+        type = col.is_a?(Symbol) ? attrs[col] || attrs[col.to_s] : attrs[col] || attrs[col.to_sym]
 
-        if type && type != inheritance_type
-          subclass = inheritance_mapping[type].safe_constantize
-          unless descendants.include?(subclass)
-            raise ActiveRecord::SubclassNotFound, %{ Invalid single-table inheritance type:
-                                                     either subclass can't be mapped to #{type}
-                                                     either #{subclass} is not a subclass of #{name}}.trim.squish
-          end
-          subclass
+        return if type.nil?
+
+        return if type == inheritance_type
+
+        subclass = inheritance_mapping[type].safe_constantize
+        unless descendants.include?(subclass)
+          raise ActiveRecord::SubclassNotFound, %{ Invalid single-table inheritance type:
+                                                   either subclass can't be mapped to #{type}
+                                                   either #{subclass} is not a subclass of #{name}}.trim.squish
         end
+        subclass
       end
     end
   end
