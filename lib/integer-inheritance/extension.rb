@@ -1,4 +1,6 @@
+# encoding: utf-8
 # frozen_string_literal: true
+
 module IntegerInheritance
   module Extension
     extend ActiveSupport::Concern
@@ -44,7 +46,7 @@ module IntegerInheritance
         unless descendants.include?(subclass)
           raise ActiveRecord::SubclassNotFound, %{ Invalid single-table inheritance type:
                                                    either subclass can't be mapped to #{type}
-                                                   either #{subclass} is not a subclass of #{name}}.trim.squish
+                                                   either #{subclass} is not a subclass of #{name} }.squish
         end
         subclass
       end

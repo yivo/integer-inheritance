@@ -1,5 +1,8 @@
+# encoding: utf-8
 # frozen_string_literal: true
-require 'active_support/all'
+
+require 'active_support/concern'
+require 'active_support/core_ext/string'
 require 'active_record'
 
 require 'integer-inheritance/macro'
@@ -23,7 +26,10 @@ module IntegerInheritance
   self.default_column = 'inheritance_type'
 end
 
-module ActiveRecord
-  Base.include IntegerInheritance::Macro
-  ConnectionAdapters::TableDefinition.include IntegerInheritance::ColumnTypes
+class ActiveRecord::Base
+  include IntegerInheritance::Macro
+end
+
+class ActiveRecord::ConnectionAdapters::TableDefinition
+  include IntegerInheritance::ColumnTypes
 end
