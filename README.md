@@ -26,5 +26,5 @@
 
 ## Gemfile
 ```ruby
-gem 'integer-inheritance', github: 'yivo/integer-inheritance'
+gem 'integer-inheritance', '~> 1.0'
 ```
